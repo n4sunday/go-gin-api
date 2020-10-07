@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	controllers "go-gin-api/controllers"
+	models "go-gin-api/models"
 	"log"
 	"os"
 
@@ -26,12 +27,13 @@ func main() {
 	user := os.Getenv("POSTGRES_USER")
 
 	r := gin.Default()
-	fmt.Println("HOST:", host)
 	dsn := fmt.Sprintf("host=%v user=%v password=%v dbname=%v port=%v sslmode=disable TimeZone=Asia/Shanghai", host, user, password, database, port)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("Failed to connect to database!")
 	}
+
+	db.AutoMigrate(&models.Book{}, &models.Firearms{}, &models.Brand{})
 
 	r.Use(func(c *gin.Context) {
 		c.Set("db", db)
