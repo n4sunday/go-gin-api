@@ -28,3 +28,13 @@ type Brand struct {
 	Country  string     `json:"country"`
 	firearms []Firearms `gorm:"many2many:firearms"`
 }
+
+type CreateFirearmsInput struct {
+	Name     string `json:"name" binding:"required"`
+	Year     int    `json:"year" binding:"required"`
+	Caliber  string `json:"caliber" binding:"required"`
+	System   string `json:"system" binding:"required"`
+	Capacity string `json:"capacity" binding:"required"`
+	Barrel   string `json:"barrel" binding:"required"`
+	Size     string `json:"size" binding:"required"`
+}

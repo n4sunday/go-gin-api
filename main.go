@@ -50,5 +50,8 @@ func main() {
 	r.GET("/books/:id", controllers.FindBook)
 	r.PATCH("/books/:id", controllers.UpdateBook)
 	r.DELETE("/books/:id", controllers.DeleteBook)
+
+	r.GET("/firearms", controllers.FindFirearms)
+	r.POST("/firearms", controllers.CreateFirearms)
 	r.Run(":9500")
 }
