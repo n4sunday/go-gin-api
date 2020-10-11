@@ -47,6 +47,7 @@ func main() {
 		&models.Order{},
 		&models.OrderItem{},
 		&models.Todo{},
+		&models.User{},
 	)
 
 	r.Use(func(c *gin.Context) {
@@ -74,11 +75,19 @@ func main() {
 	r.POST("/order", controllers.CreateOrder)
 	r.GET("/orderitem", controllers.FindOrderItem)
 
-	r.GET("/todo", controllers.FindTodo)
-	r.POST("/todo", controllers.CreateTodo)
+	todo := r.Group("/todo")
+	{
+		todo.GET("/", controllers.FindTodo)
+		todo.POST("/", controllers.CreateTodo)
+		todo.GET("/:userid", controllers.FindTodoByUserID)
+	}
 
 	r.POST("/upload", controllers.Upload)
 	r.StaticFS("/file", http.Dir("public"))
+
+	r.GET("/user/:id", controllers.FindUserById)
+	r.GET("/user", controllers.FindUser)
+	r.POST("/user", controllers.CreateUser)
 
 	r.Run(":9500")
 }

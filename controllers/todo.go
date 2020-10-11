@@ -18,6 +18,15 @@ func FindTodo(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": todo})
 }
 
+func FindTodoByUserID(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+	id := c.Query("userid")
+
+	var todo []models.Todo
+	db.Where("user_id = ?", id).Find(&todo)
+	c.JSON(http.StatusOK, gin.H{"data": todo})
+}
+
 func CreateTodo(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 
@@ -28,9 +37,9 @@ func CreateTodo(c *gin.Context) {
 	}
 
 	todo := models.Todo{
-		Username: input.Username,
-		Title:    input.Title,
-		Message:  input.Message,
+		UserID:  input.UserID,
+		Title:   input.Title,
+		Message: input.Message,
 	}
 	db.Create(&todo)
 	c.JSON(http.StatusOK, gin.H{"data": todo})
